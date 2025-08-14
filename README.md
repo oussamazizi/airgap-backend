@@ -1,24 +1,32 @@
-📦 Backend – Airgap Backend
+# 🖥 Airgap Backend
 
-The backend provides the APIs required to prepare offline development environments.
-It allows you to:
+The Airgap Backend provides the APIs required to prepare **offline development environments** for multiple package managers.
 
-Manage a list of generation jobs for archives (ZIP) containing all required dependencies.
+## Features
+- **Job management** for archive generation (`ZIP` format)
+- Downloads and bundles packages for:
+  - **npm** (Node.js)
+  - **pip** (Python)
+  - **apt** (Linux system packages)
+- **Version listing** for each package:
+  - `GET /api/versions/npm?name=<pkg>`
+  - `GET /api/versions/pip?name=<pkg>`
+  - `GET /api/versions/apt?name=<pkg>&image=<distro>`
+- **Artifact hosting** for completed jobs
+- **Real-time job tracking**
 
-Download packages and dependencies for npm, pip, and apt, respecting the specified versions.
+> **Note:**  
+> An **autocomplete API** exists in the backend but currently contains bugs.  
+> The frontend does **not** use it yet.  
+> Contributions to debug and improve it are welcome.
 
-List available versions for a package (npm, pip, apt) via simple endpoints:
+## Requirements
+- **Redis** ≥ 6.2
+- **Docker** installed (for Docker-based builds)
+- Node.js ≥ 20
 
-GET /api/versions/npm?name=<pkg>
-
-GET /api/versions/pip?name=<pkg>
-
-GET /api/versions/apt?name=<pkg>&image=<distro>
-
-Provide artifacts (ready-to-deploy ZIP files) once a job is completed.
-
-Track job status in real-time.
-
-Note:
-There is an autocomplete feature implemented in the backend, but it currently contains known bugs and is not actively used by the frontend.
-Contributions to debug and improve it are welcome.
+## Getting Started
+```bash
+cd airgap-backend
+npm install
+npm run dev
