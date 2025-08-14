@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum JobStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+}
+
+model BundleJob {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  finishedAt  DateTime?
+  status      JobStatus @default(QUEUED)
+  platform    String
+  spec        Json
+  error       String?
+  artifacts   Artifact[]
+}
+
+model Artifact {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  jobId     String
+  kind      String   // zip | image-tar | compose | script | checksum | sbom | readme
+  filename  String
+  size      Int
+  checksum  String
+  job       BundleJob @relation(fields: [jobId], references: [id])
+}
